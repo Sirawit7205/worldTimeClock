@@ -21,6 +21,19 @@
 
 
 module top_module(
-
+    input clock,
+    output [7:0] data,
+    output enable, select, backlight
     );
+    
+    wire clock1hz, clock50hz;
+    wire [127:0] mux_top, mux_bot;
+    
+    reg timeIntrup = 1;
+    reg [127:0] time_top = {8'h30,8'h30,8'h31,8'h35,8'h3A,8'h34,8'h39,8'h3A,8'h37,8'h36,8'h30,8'h30,8'h30,8'h30,8'h30,8'h30};
+    reg [127:0] time_bot = {8'h30,8'h30,8'h30,8'h30,8'h30,8'h30,8'h31,8'h35,8'h3A,8'h34,8'h39,8'h3A,8'h37,8'h36,8'h30,8'h30};
+    
+    prescaler(.clock(clock), .out1hz(clock1hz), .out50hz(clock50hz));
+    display_mux(.timeIntrup(timeIntrup), .time_top(time_top), .time_bot(time_bot), .out_top(mux_top), .out_bot(mux_bot));
+    display_driver(.clock(clock50hz), .in_top(mux_top), .in_bot(mux_bot), .data(data), .enable(enable), .select(select), .backlight(backlight));
 endmodule

@@ -24,13 +24,16 @@ module display_test(
     input clock,
     output reg [7:0] data,
     output reg enable,
-    output reg select
+    output reg select,
+    output backlight
     );
     
     reg flag;
     reg [63:0] constdata = {8'h38,8'h0E,8'h06,8'h50,8'h41,8'h4E,8'h54,8'h45};
     integer length = 8, j = 0;
     reg [27:0] i;
+    
+    assign backlight = 1;
     
     always@(posedge clock)
     begin
@@ -58,5 +61,4 @@ module display_test(
             else select = 1;
         end
     end
-    
 endmodule

@@ -22,24 +22,31 @@
 
 module prescaler(
     input clock,
-    output out1hz    
+    output out1hz, out50hz    
     );
     
-    reg [27:0] count;
-    reg buff;
+    reg [27:0] count1, count50;
+    reg flag1, flag50;
     
     always@(posedge clock)
     begin
-        if(count == 100_000_000) count = 0; 
-        else count = count + 1;
+        if(count1 == 100_000_000) count1 = 0; 
+        else count1 = count1 + 1;
+        
+        if(count50 == 2_000_000) count50 = 0;
+        else count50 = count50 + 1;
     end
     
-    always@(count)
+    always@(count1 or count50)
     begin
-        if(count == 100_000_000) buff = 1;
-        else buff = 0;
+        if(count1 == 100_000_000) flag1 = 1;
+        else flag1 = 0;
+        
+        if(count50 == 2_000_000) flag50 = 1;
+        else flag50 = 0;
     end
     
-    assign out1hz = buff;
+    assign out1hz = flag1;
+    assign out50hz = flag50;
     
 endmodule
