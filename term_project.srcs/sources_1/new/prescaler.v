@@ -30,11 +30,15 @@ module prescaler(
     
     always@(posedge clock)
     begin
-        if(count1 == 100_000_000) count1 = 0; 
-        else count1 = count1 + 1;
+        if(count1 == 100_000_000)
+            count1 = 0; 
+        else 
+            count1 = count1 + 1;
         
-        if(count50 == 2_000_000) count50 = 0;
-        else count50 = count50 + 1;
+        if(count50 == 2_000_000)
+             count50 = 0;
+        else 
+            count50 = count50 + 1;
     end
     
     always@(count1 or count50)
