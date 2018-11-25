@@ -20,9 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module decodertime(
+module number_to_charcode(
     input [3:0] in,
-    output reg [7:0]out
+    output reg [7:0] out
     );
     always@(in)
         case(in)

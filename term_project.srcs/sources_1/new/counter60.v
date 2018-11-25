@@ -28,26 +28,25 @@ module counter60(
     output trigger
     );
     
-    reg [5:0] current;
-    reg ctrig;
+    reg [5:0] current = 0;
+    reg ctrig = 0;
     
     //counting block
-    always@(clock)
+    always@(posedge clock or posedge load)
     begin
-        current = current + 1;
-        
-        if(current == 60)
+        if(load)
+            current = preset;
+        else
         begin
-            current = 0;
-            ctrig = 1;      //trigger the next counter in chain
-        end 
-        else ctrig = 0;     //reset trigger
-    end
-    
-    //load initial data block
-    always@(load)
-    begin
-        current = preset;
+            if(current == 60)
+            begin
+                current <= 0;
+                ctrig <= 1;      //trigger the next counter in chain
+            end 
+            else ctrig <= 0;     //reset trigger
+            
+            current <= current + 1;
+        end
     end
     
     //assign to output

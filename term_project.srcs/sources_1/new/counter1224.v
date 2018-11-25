@@ -23,38 +23,38 @@
 module counter1224(
     input [4:0] preset,
     input load,
-    input mode,
+    input is24HrMode,
     input clock,
     output [4:0] out,
-    output ampm
+    output isAM
     );
     
-    reg [4:0] current;
-    reg currentampm;
+    reg [4:0] current = 0;
+    reg currentampm = 0;
     
     //counting block
-    always@(posedge clock)
+    always@(posedge clock or posedge load)
     begin
-        current = current + 1;
-        
-        if(mode)    //using 12 hour mode
+        if(load)
+            current <= preset;
+        else
         begin
-            if(current == 12) current = 0;
-            currentampm = ~currentampm;     //toogle AM/PM
-        end         //using 24 hour mode
-        else begin
-            if(current == 24) current = 0;
+            if(is24HrMode)    //using 24 hour mode
+            begin
+                if(current == 24) current <= 0;
+            end         //using 12 hour mode
+            else begin
+                if(current == 12) current <= 0;
+                currentampm <= ~currentampm;     //toogle AM/PM
+            end
+            
+            current <= current + 1;
+               
         end
-    end
-    
-    //load initial data block
-    always@(load)
-    begin
-        current = preset;
     end
     
     //assign to outputs
     assign out = current;
-    assign ampm = currentampm;
+    assign isAM = currentampm;
     
 endmodule

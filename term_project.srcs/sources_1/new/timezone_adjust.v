@@ -20,13 +20,31 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module timezone(
+module timezone_adjust(
     input [4:0] hour,
-    input [4:0] selecttime,
-    output [4:0] presenthour
+    input [4:0] selectedTime,
+    input is24HrMode,
+    output [4:0] adjustedTime
     );
+    
     reg [4:0]temp;
-        always@(selecttime)
-            temp = presenthour + selecttime;
-    assign presenthour = temp;
+    
+    always@(*)
+    begin
+        temp = hour + selectedTime;
+        
+        if(is24HrMode)
+        begin
+            if(temp > 23) temp = temp - 24;
+            else if(temp < 0) temp = temp + 24;
+        end
+        else
+        begin
+            if(temp > 11) temp = temp - 12;
+            else if(temp < 0) temp = temp + 12;
+        end        
+    end
+    
+    assign adjustedTime = temp;
+    
 endmodule
