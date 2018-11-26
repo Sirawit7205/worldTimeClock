@@ -33,7 +33,7 @@ module timezone_adjust(
     begin
         temp = hour + selectedTime;
         
-        if(is24HrMode)
+        /*if(is24HrMode)    //TO BE FIXED LATER
         begin
             if(temp > 23) temp = temp - 24;
             else if(temp < 0) temp = temp + 24;
@@ -42,7 +42,7 @@ module timezone_adjust(
         begin
             if(temp > 11) temp = temp - 12;
             else if(temp < 0) temp = temp + 12;
-        end        
+        end*/    
     end
     
     assign adjustedTime = temp;

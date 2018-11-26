@@ -29,9 +29,9 @@ module display_driver(
     output backlight
     );
     
-    reg [23:0] initData = {8'h38,8'h0C,8'h06};
+    reg [31:0] initData = {8'h38,8'h0C,8'h06,8'h01};
     reg [7:0] setCursorTop = {8'h80}, setCursorBot = {8'hC0};
-    reg [4:0] initSize = 3, dataSize = 16, j = -1;
+    reg [4:0] initSize = 4, dataSize = 16, j = -1;
     reg [2:0] commandstage = 0;
     reg initflag = 0, stage = 0;
     

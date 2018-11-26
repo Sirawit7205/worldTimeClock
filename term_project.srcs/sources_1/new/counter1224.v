@@ -39,17 +39,19 @@ module counter1224(
             current <= preset;
         else
         begin
-            if(is24HrMode)    //using 24 hour mode
+            if(is24HrMode)      //using 24 hour mode
             begin
-                if(current == 24) current <= 0;
-            end         //using 12 hour mode
+                if(current == 23) current = 0;
+                else current = current + 1;
+            end                 //using 12 hour mode
             else begin
-                if(current == 12) current <= 0;
-                currentampm <= ~currentampm;     //toogle AM/PM
-            end
-            
-            current <= current + 1;
-               
+                if(current == 11)
+                begin 
+                    current = 0;
+                    currentampm <= ~currentampm;     //toogle AM/PM
+                end
+                else current = current + 1;
+            end   
         end
     end
     

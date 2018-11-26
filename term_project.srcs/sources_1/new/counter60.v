@@ -35,17 +35,19 @@ module counter60(
     always@(posedge clock or posedge load)
     begin
         if(load)
-            current = preset;
+            current <= preset;
         else
         begin
-            if(current == 60)
+            if(current == 59)
             begin
-                current <= 0;
+                current = 0;
                 ctrig <= 1;      //trigger the next counter in chain
             end 
-            else ctrig <= 0;     //reset trigger
-            
-            current <= current + 1;
+            else
+            begin
+                current = current + 1;
+                ctrig <= 0;     //reset trigger
+            end
         end
     end
     
