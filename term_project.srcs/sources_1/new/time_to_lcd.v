@@ -21,7 +21,7 @@
 
 
 module time_to_lcd(
-    input [4:0] hour,
+    input [5:0] hour,
     input [5:0] minute,
     input [5:0] second,
     input is24HrMode,

@@ -21,15 +21,15 @@
 
 
 module counter1224(
-    input [4:0] preset,
+    input [5:0] preset,
     input load,
     input is24HrMode,
     input clock,
-    output [4:0] out,
+    output [5:0] out,
     output isAM
     );
     
-    reg [4:0] current = 0;
+    reg [5:0] current = 0;
     reg currentampm = 0;
     
     //counting block

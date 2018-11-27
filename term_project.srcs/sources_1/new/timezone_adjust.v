@@ -21,30 +21,41 @@
 
 
 module timezone_adjust(
-    input [4:0] hour,
-    input [4:0] selectedTime,
+    input [5:0] hour,
+    input [5:0] selectedTime,
     input is24HrMode,
-    output [4:0] adjustedTime
+    input isAM,
+    output [5:0] adjustedTime,
+    output adjustedAMPM
     );
     
-    reg [4:0]temp;
+    reg [5:0] temp;
+    reg ampm;
     
     always@(*)
     begin
         temp = hour + selectedTime;
         
-        /*if(is24HrMode)    //TO BE FIXED LATER
+        if(is24HrMode)
         begin
-            if(temp > 23) temp = temp - 24;
-            else if(temp < 0) temp = temp + 24;
+            if(temp >= 54) temp = temp - 40;
+            else if(temp >= 24) temp = temp - 24;
         end
         else
         begin
-            if(temp > 11) temp = temp - 12;
-            else if(temp < 0) temp = temp + 12;
-        end*/    
+            if(temp >= 54)
+            begin
+                temp = temp - 52;
+                ampm = ~isAM;
+            end
+            else if(temp >= 12)
+            begin
+                temp = temp - 12;
+                ampm = ~isAM;
+            end
+        end 
     end
     
     assign adjustedTime = temp;
-    
+    assign adjustedAMPM = ampm;
 endmodule
