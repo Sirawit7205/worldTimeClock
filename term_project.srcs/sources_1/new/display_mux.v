@@ -21,17 +21,22 @@
 
 
 module display_mux(
-    input timeIntrup,           //interrupts
-    input [127:0] time_top,     //from time module
-    input [127:0] time_bot,
-    output reg [127:0] out_top, //output to display driver
+    input menuIntrup,                   //interrupts
+    input [127:0] time_top, menu_top,   //from time module
+    input [127:0] time_bot, menu_bot,
+    output reg [127:0] out_top,         //output to display driver
     output reg [127:0] out_bot
     );
     
     always@(*)
     begin
         //sort by priority
-        if(timeIntrup)
+        if(menuIntrup)
+        begin
+            out_top = menu_top;
+            out_bot = menu_bot;
+        end
+        else
         begin
             out_top = time_top;
             out_bot = time_bot;
