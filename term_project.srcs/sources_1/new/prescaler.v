@@ -46,7 +46,7 @@ module prescaler(
             count200 = count200 + 1;
     end
     
-    always@(count1 or count200)
+    always@(count1 or count5 or count200)
     begin
         if(count1 == 100_000_000) flag1 = 1;
         else flag1 = 0;

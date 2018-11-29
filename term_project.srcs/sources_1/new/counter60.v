@@ -35,7 +35,7 @@ module counter60(
     always@(posedge clock or posedge load)
     begin
         if(load)
-            current <= preset;
+            current = preset;
         else
         begin
             if(current == 59)

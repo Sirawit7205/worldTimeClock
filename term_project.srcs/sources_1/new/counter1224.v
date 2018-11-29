@@ -22,6 +22,7 @@
 
 module counter1224(
     input [5:0] preset,
+    input presetampm,
     input load,
     input is24HrMode,
     input clock,
@@ -36,7 +37,10 @@ module counter1224(
     always@(posedge clock or posedge load)
     begin
         if(load)
-            current <= preset;
+        begin
+            current = preset;
+            if(is24HrMode == 0) currentampm = presetampm;
+        end
         else
         begin
             if(is24HrMode)      //using 24 hour mode
