@@ -27,7 +27,7 @@ module counter1224(
     input is24HrMode,
     input clock,
     output [5:0] out,
-    output isAM
+    output isPM
     );
     
     reg [5:0] current = 0;
@@ -61,6 +61,6 @@ module counter1224(
     
     //assign to outputs
     assign out = current;
-    assign isAM = currentampm;
+    assign isPM = currentampm;
     
 endmodule

@@ -24,7 +24,7 @@ module timezone_adjust(
     input [5:0] hour,
     input [5:0] selectedTime,
     input is24HrMode,
-    input isAM,
+    input isPM,
     output [5:0] adjustedTime,
     output adjustedAMPM
     );
@@ -46,12 +46,12 @@ module timezone_adjust(
             if(temp >= 54)
             begin
                 temp = temp - 52;
-                ampm = ~isAM;
+                ampm = ~isPM;
             end
             else if(temp >= 12)
             begin
                 temp = temp - 12;
-                ampm = ~isAM;
+                ampm = ~isPM;
             end
         end 
     end

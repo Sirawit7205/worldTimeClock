@@ -25,7 +25,7 @@ module time_to_lcd(
     input [5:0] minute,
     input [5:0] second,
     input is24HrMode,
-    input isAM,
+    input isPM,
     output reg [127:0] out
     );
     wire [3:0] tempHourL, tempHourR, tempMinuteL, tempMinuteR ,tempSecondL ,tempSecondR;
@@ -52,7 +52,7 @@ module time_to_lcd(
         if(is24HrMode)
             out = {8'h20, 8'h20, 8'h20, 8'h20, hourL, hourR, 8'h3A, minuteL, minuteR, 8'h3A, secondL, secondR, 8'h20, 8'h20, 8'h20, 8'h20};
         else
-            if(isAM)
+            if(isPM == 0)
                 out = {8'h20, 8'h20, hourL, hourR, 8'h3A, minuteL, minuteR, 8'h3A, secondL, secondR, 8'h20, 8'h41, 8'h4D, 8'h20, 8'h20, 8'h20};
             else
                 out = {8'h20, 8'h20, hourL, hourR, 8'h3A, minuteL, minuteR, 8'h3A, secondL, secondR, 8'h20, 8'h50, 8'h4D, 8'h20, 8'h20, 8'h20};
