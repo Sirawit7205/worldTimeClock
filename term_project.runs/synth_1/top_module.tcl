@@ -41,6 +41,13 @@ read_verilog -library xil_defaultlib {
   E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/prescaler.v
   E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/timezone_control.v
   E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/top_module.v
+  E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/alarm_control.v
+  E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/timezone_adjust.v
+  E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/time_to_lcd.v
+  E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/number_to_charcode.v
+  E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/timezone_name.v
+  E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/menu.v
+  E:/KMUTT/Y2/CPE223/term_project/term_project.srcs/sources_1/new/button_debounce.v
 }
 # Mark all dcp files as not used in implementation to prevent them from being
 # stitched into the results of this synthesis run. Any black boxes in the
@@ -50,8 +57,8 @@ read_verilog -library xil_defaultlib {
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc E:/KMUTT/Y2/CPE223/term_project/displaytest.xdc
-set_property used_in_implementation false [get_files E:/KMUTT/Y2/CPE223/term_project/displaytest.xdc]
+read_xdc E:/KMUTT/Y2/CPE223/term_project/constraint.xdc
+set_property used_in_implementation false [get_files E:/KMUTT/Y2/CPE223/term_project/constraint.xdc]
 
 set_param ips.enableIPCacheLiteLoad 0
 close [open __synthesis_is_running__ w]

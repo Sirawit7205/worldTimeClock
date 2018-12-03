@@ -25,19 +25,25 @@ module counter60(
     input load,
     input clock,
     output [5:0] out,
-    output trigger
+    output trigger, load_finished
     );
     
     reg [5:0] current = 0;
-    reg ctrig = 0;
+    reg ctrig = 0, load_fn = 0;
     
     //counting block
     always@(posedge clock or posedge load)
     begin
         if(load)
+        begin
             current = preset;
+            load_fn <= 1;
+        end
+        
         else
         begin
+            load_fn <= 0;
+        
             if(current == 59)
             begin
                 current = 0;
@@ -54,5 +60,6 @@ module counter60(
     //assign to output
     assign out = current;
     assign trigger = ctrig;
+    assign load_finished = load_fn;
     
 endmodule

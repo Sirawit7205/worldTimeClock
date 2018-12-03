@@ -23,6 +23,7 @@
 module display_driver(
     input clock,
     input [127:0] in_top, in_bot,
+    input backlight_ctrl,
     output reg [7:0] data,
     output reg enable,
     output reg select,
@@ -36,7 +37,7 @@ module display_driver(
     reg initflag = 0, stage = 0;
     
     //turn on the backlight
-    assign backlight = 1;
+    assign backlight = backlight_ctrl;
     
     //init the display to 2 lines, 8 bit, 5x8 dot, turn display on with cursor,
     //then set cursor to home

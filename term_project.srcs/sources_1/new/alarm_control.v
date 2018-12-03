@@ -26,11 +26,11 @@ module alarm_control(
     input [5:0] ref_min,
     input [4:0] set_hour,
     input [5:0] set_min,
-    input on,
-    input off_btn,
-    input snooze_btn,
+    input ref_ampm, set_ampm,
+    input on, is24HrMode,
+    input off_btn, snooze_btn,
     output play_sound,
-    output light
+    output light, backlight
     );
     
     reg [5:0] snooze_min = 0;
@@ -38,27 +38,35 @@ module alarm_control(
     reg [2:0] stage = 0;
     reg alarm_trig = 0;
     
-    play_alarm play(.clock(clock), .trig(alarm_trig), .play_sound(play_sound), .light(light));
+    play_alarm play(.clock(clock), .trig(alarm_trig), .play_sound(play_sound), .light(light), .backlight(backlight));
     
     //if the time changes
-    always@(ref_hour or ref_min or snooze_btn or off_btn)
+    always@(posedge clock)
     begin
         //check if the alarm is set
         if(on)
         begin
             case(stage)
-                2'b00: if(ref_hour == set_hour && ref_min == set_min) stage <= 2'b01;
+                2'b00: begin
+                    if(is24HrMode)
+                        if(ref_hour == set_hour && ref_min == set_min) stage <= 2'b01;
+                    else
+                        if(ref_hour == set_hour && ref_min == set_min && ref_ampm == set_ampm) stage <= 2'b01;
+                end
                 2'b01: begin
                     if(snooze_btn) stage <= 2'b10;
                     else if(off_btn) stage <= 2'b00;
                 end
-                2'b10: if(ref_hour == set_hour + snooze_hour && ref_min == set_min + snooze_min) stage <= 2'b01;
+                2'b10: stage <= 2'b11;
+                2'b11: begin
+                    if(ref_hour == set_hour + snooze_hour && ref_min == set_min + snooze_min) stage <= 2'b01;
+                end
             endcase
         end
     end
     
     
-    always@(stage)
+    always@(posedge clock)
     begin
         if(on)
         begin
@@ -77,6 +85,7 @@ module alarm_control(
                     begin
                         snooze_min <= ref_min + 5;
                         snooze_hour <= 0;
+                        alarm_trig <= 0;
                     end
                     
                     else
@@ -94,7 +103,7 @@ module play_alarm(
     input clock,
     input trig,
     output reg play_sound,
-    output reg light
+    output reg light, backlight
 );
     reg stage = 0;
     
@@ -107,6 +116,7 @@ module play_alarm(
                 stage <= 1;
                 play_sound = 1;
                 light = 1;
+                backlight = 1;
             end
             
             else
@@ -114,6 +124,7 @@ module play_alarm(
                 stage <= 0;
                 play_sound = 0;
                 light = 0;
+                backlight = 0;
             end
         end
 
@@ -121,7 +132,8 @@ module play_alarm(
         begin
             stage <= 0;
             play_sound = 0;
-            light = 0;           
+            light = 0;
+            backlight = 1;   
         end
     end
 endmodule

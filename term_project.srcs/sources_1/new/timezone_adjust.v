@@ -53,6 +53,8 @@ module timezone_adjust(
                 temp = temp - 12;
                 ampm = ~isPM;
             end
+            else
+                ampm = isPM;
         end 
     end
     

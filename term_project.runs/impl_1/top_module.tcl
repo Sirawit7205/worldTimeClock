@@ -76,7 +76,7 @@ set rc [catch {
   set_property ip_output_repo E:/KMUTT/Y2/CPE223/term_project/term_project.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
   add_files -quiet E:/KMUTT/Y2/CPE223/term_project/term_project.runs/synth_1/top_module.dcp
-  read_xdc E:/KMUTT/Y2/CPE223/term_project/displaytest.xdc
+  read_xdc E:/KMUTT/Y2/CPE223/term_project/constraint.xdc
   link_design -top top_module -part xc7a35tcpg236-1
   close_msg_db -file init_design.pb
 } RESULT]
