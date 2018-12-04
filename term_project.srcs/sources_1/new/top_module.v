@@ -49,7 +49,7 @@ module top_module(
                   .on(alarm_on), .is24HrMode(is24HrMode), .off_btn(offBtn), .snooze_btn(snzBtn), .play_sound(play), .light(light), .backlight(backlight_ctrl));
     display_mux(.menuIntrup(menuIntrup), .time_top(time_top), .menu_top(menu_top), .time_bot(time_bot), .menu_bot(menu_bot), .out_top(mux_top), .out_bot(mux_bot));
     display_driver(.clock(clock200hz), .in_top(mux_top), .in_bot(mux_bot), .data(data), .enable(enable), .select(select), .backlight_ctrl(backlight_ctrl), .backlight(backlight));
-    menu(.clock(clock5hz), .menuBtn(menu), .snzBtn(snz), .minBtn(minus), .plusBtn(plus), .offBtn(off), .menu_top(menu_top), .menu_bot(menu_bot), .menuIntrup(menuIntrup), .rec(rec), .is24HrMode(is24HrMode),
+    menu(.clock(clock5hz), .menuBtn(menu), .minBtn(minus), .plusBtn(plus), .offBtn(off), .menu_top(menu_top), .menu_bot(menu_bot), .menuIntrup(menuIntrup), .rec(rec), .is24HrMode(is24HrMode),
          .presetHour(preset_hour), .presetMin(preset_min), .presetampm(presetampm), .load(load), .load_finished(load_fnA & load_fnB), .alarmHour(alarm_hour), .alarmMin(alarm_min),
          .alarmampm(alarm_ampm), .alarm_on(alarm_on));
 endmodule

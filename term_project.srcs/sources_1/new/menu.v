@@ -22,7 +22,7 @@
 
 module menu(
     input clock, load_finished,
-    input menuBtn, snzBtn, minBtn, plusBtn, offBtn,
+    input menuBtn, minBtn, plusBtn, offBtn,
     output reg [127:0] menu_top, menu_bot,
     output [5:0] presetHour, presetMin, alarmHour, alarmMin,
     output presetampm, alarmampm, alarm_on,
@@ -74,7 +74,7 @@ module menu(
                      else if(offBtn) state <= 4'b1011;  //record alarm -> RA submenu
             4'b0101: if(offBtn) state <= 4'b0110;       //ST submenu 1 -> ST submenu 2
             4'b0110: if(offBtn) state <= 4'b0111;       //ST submenu 2 -> ST load
-            4'b0111: if(load_finished) state <= 4'b0000;//ST load -> idle
+            4'b0111: if(load_finished) state <= 4'b1101;//ST load -> idle
             4'b1000: state <= 4'b0000;                  //toggle am/pm -> idle
             4'b1001: if(offBtn) state <= 4'b1010;       //SA submenu 1 -> SA submenu 2
             4'b1010: if(offBtn) state <= 4'b0000;       //SA submenu 2 -> idle
@@ -100,14 +100,13 @@ module menu(
                 hour <= 0;
                 min <= 0;
                 ampm <= 0;
-                load <= 0;
             end
             4'b0001: begin
                 menu_top = {8'h4D, 8'h45, 8'h4E, 8'h55, 8'h3A, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 menu_bot = {8'h53, 8'h45, 8'h54, 8'h20, 8'h54, 8'h49, 8'h4D, 8'h45, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
             end
             4'b0010: menu_bot = {8'h31, 8'h32, 8'h2F, 8'h32, 8'h34, 8'h20, 8'h48, 8'h4F, 8'h55, 8'h52, 8'h20, 8'h4D, 8'h4F, 8'h44, 8'h45, 8'h20};
-            4'b0011: menu_bot = {8'h53, 8'h45, 8'h54, 8'h20, 8'h41, 8'h4C, 8'h41, 8'h52, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
+            4'b0011: menu_bot = {8'h53, 8'h45, 8'h54, 8'h20, 8'h41, 8'h4C, 8'h41, 8'h52, 8'h4D, 8'h20, 8'h54, 8'h49, 8'h4D, 8'h45, 8'h20, 8'h20};
             4'b0100: menu_bot = {8'h52, 8'h45, 8'h43, 8'h4F, 8'h52, 8'h44, 8'h20, 8'h41, 8'h4C, 8'h41, 8'h52, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20};
             
             //other states
@@ -230,6 +229,7 @@ module menu(
             end
             4'b1101: begin
                 rec = 0;
+                load = 0;
             end
             4'b1110: begin
                 if(alarm)

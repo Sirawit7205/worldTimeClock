@@ -41,12 +41,12 @@ module counter1224(
         begin
             current = preset;
             if(is24HrMode == 0) currentampm = presetampm;
-            load_fn <= 1; 
+            load_fn = 1; 
         end
         
         else
         begin
-            load_fn <= 0;
+            load_fn = 0;
         
             if(is24HrMode)      //using 24 hour mode
             begin

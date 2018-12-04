@@ -37,12 +37,12 @@ module counter60(
         if(load)
         begin
             current = preset;
-            load_fn <= 1;
+            load_fn = 1;
         end
         
         else
         begin
-            load_fn <= 0;
+            load_fn = 0;
         
             if(current == 59)
             begin

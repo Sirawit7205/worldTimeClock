@@ -22,9 +22,9 @@
 
 module alarm_control(
     input clock,
-    input [4:0] ref_hour,
+    input [5:0] ref_hour,
     input [5:0] ref_min,
-    input [4:0] set_hour,
+    input [5:0] set_hour,
     input [5:0] set_min,
     input ref_ampm, set_ampm,
     input on, is24HrMode,
