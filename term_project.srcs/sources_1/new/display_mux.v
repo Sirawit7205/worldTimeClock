@@ -21,9 +21,10 @@
 
 
 module display_mux(
-    input menuIntrup,                   //interrupts
+    input menuIntrup, ovrIntrup,        //interrupts
     input [127:0] time_top, menu_top,   //from time module
     input [127:0] time_bot, menu_bot,
+    input [127:0] ntzoverlay_top, ntzoverlay_bot,
     output reg [127:0] out_top,         //output to display driver
     output reg [127:0] out_bot
     );
@@ -31,7 +32,12 @@ module display_mux(
     always@(*)
     begin
         //sort by priority
-        if(menuIntrup)
+        if(ovrIntrup)
+        begin
+            out_top = ntzoverlay_top;
+            out_bot = ntzoverlay_bot;
+        end
+        else if(menuIntrup)
         begin
             out_top = menu_top;
             out_bot = menu_bot;

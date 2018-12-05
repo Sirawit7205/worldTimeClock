@@ -64,7 +64,7 @@ module timezone_control(
                 temp = 6'b001001;
              16'b0000_0000_0000_0001 : //10
                 temp = 6'b001010;
-                default: temp = 6'b000000;
+                default: temp = 6'b111111;
             endcase
         end
         
