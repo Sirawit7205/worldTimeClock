@@ -25,16 +25,28 @@ module timezone_adjust(
     input [5:0] selectedTime,
     input is24HrMode,
     input isPM,
+    input loadRefZone,
     output [5:0] adjustedTime,
-    output adjustedAMPM
+    output adjustedAMPM, load_finished
     );
     
-    reg [5:0] temp;
-    reg ampm;
+    reg [5:0] refZone = 0, temp;
+    reg ampm, load_fn = 0;
+    
+    always@(posedge loadRefZone or negedge loadRefZone)
+    begin
+        if(loadRefZone == 1)
+        begin
+            refZone = selectedTime * -1;
+            load_fn <= 1;
+        end
+        else
+            load_fn <= 0;
+    end
     
     always@(*)
     begin
-        temp = hour + selectedTime;
+        temp = hour + refZone + selectedTime;
         
         if(is24HrMode)
         begin
@@ -60,4 +72,6 @@ module timezone_adjust(
     
     assign adjustedTime = temp;
     assign adjustedAMPM = ampm;
+    assign load_finished = load_fn;
+    
 endmodule

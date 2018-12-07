@@ -31,7 +31,7 @@ module top_module(
     
     wire clock1hz, clock5hz, clock200hz, trigSec, trigMin, isPM, adjustedAMPM;
     wire menuIntrup, ovrIntrup, menu, snz, minus, plus, off, is24HrMode, presetampm, load;
-    wire load_fnA, load_fnB, alarm_on, alarm_ampm, backlight_ctrl;
+    wire load_fnA, load_fnB, load_fnC, alarm_on, alarm_ampm, backlight_ctrl;
     wire [5:0] hour, preset_hour, preset_min, timezone_hour, adjusted_hour;
     wire [5:0] minute, second, alarm_hour, alarm_min;
     wire [127:0] time_top, time_bot, menu_top, menu_bot, ovr_top, ovr_bot, mux_top, mux_bot;
@@ -42,7 +42,7 @@ module top_module(
     counter60 min(.preset(preset_min), .load(load), .clock(trigSec), .out(minute), .trigger(trigMin), .load_finished(load_fnB));
     counter1224 (.preset(preset_hour), .presetampm(presetampm), .load(load), .clock(trigMin), .is24HrMode(is24HrMode), .out(hour), .isPM(isPM), .load_finished(load_fnA));
     timezone_control(.select(zoneSw), .out(timezone_hour), .led(led));
-    timezone_adjust(.hour(hour), .selectedTime(timezone_hour), .is24HrMode(is24HrMode), .isPM(isPM), .adjustedTime(adjusted_hour), .adjustedAMPM(adjustedAMPM));
+    timezone_adjust(.hour(hour), .selectedTime(timezone_hour), .is24HrMode(is24HrMode), .isPM(isPM), .loadRefZone(load), .adjustedTime(adjusted_hour), .adjustedAMPM(adjustedAMPM), .load_finished(load_fnC));
     timezone_name(.timezone(timezone_hour), .lcd_out(time_top));
     timezone_overlay(.timezone(timezone_hour), .ovrIntrup(ovrIntrup), .top(ovr_top), .bot(ovr_bot));
     time_to_lcd(.hour(adjusted_hour), .minute(minute), .second(second), .is24HrMode(is24HrMode), .isPM(adjustedAMPM), .out(time_bot));
@@ -52,6 +52,6 @@ module top_module(
                   .out_top(mux_top), .out_bot(mux_bot));
     display_driver(.clock(clock200hz), .in_top(mux_top), .in_bot(mux_bot), .data(data), .enable(enable), .select(select), .backlight_ctrl(backlight_ctrl), .backlight(backlight));
     menu(.clock(clock5hz), .menuBtn(menu), .minBtn(minus), .plusBtn(plus), .offBtn(off), .menu_top(menu_top), .menu_bot(menu_bot), .menuIntrup(menuIntrup), .rec(rec), .is24HrMode(is24HrMode),
-         .presetHour(preset_hour), .presetMin(preset_min), .presetampm(presetampm), .load(load), .load_finished(load_fnA & load_fnB), .alarmHour(alarm_hour), .alarmMin(alarm_min),
+         .presetHour(preset_hour), .presetMin(preset_min), .presetampm(presetampm), .load(load), .load_finished(load_fnA & load_fnB & load_fnC), .alarmHour(alarm_hour), .alarmMin(alarm_min),
          .alarmampm(alarm_ampm), .alarm_on(alarm_on));
 endmodule
