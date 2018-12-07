@@ -35,8 +35,8 @@ module menu(
     wire [7:0] hourL, hourR, minuteL, minuteR;
     wire [7:0] hourAlmL, hourAlmR, minAlmL, minAlmR;
     reg [3:0] state = 0;
-    reg [5:0] hour = 0, min = 0, almHour = 0, almMin = 0;
-    reg hrMode = 1, ampm = 0, almAMPM = 0, alarm = 0;
+    reg [5:0] hour = 0, min = 0, almHour = 0, almMin = 0, adjAlmHour = 0;
+    reg hrMode = 1, ampm = 0, almAMPM = 0, adjAlmAMPM = 0, alarm = 0;
     
     //extract each digit
     assign tempHourL = hour / 10;
@@ -44,8 +44,8 @@ module menu(
     assign tempMinuteL = min / 10;
     assign tempMinuteR = min % 10;
     
-    assign tempAlmHourL = almHour / 10;
-    assign tempAlmHourR = almHour % 10;
+    assign tempAlmHourL = adjAlmHour / 10;
+    assign tempAlmHourR = adjAlmHour % 10;
     assign tempAlmMinL = almMin / 10;
     assign tempAlmMinR = almMin % 10;
     
@@ -176,6 +176,8 @@ module menu(
                 //24 hour mode
                 if(hrMode)
                 begin
+                    almAMPM = 0;
+                
                     if(almHour == 63) almHour = 23;
                     else if(almHour == 24) almHour = 0;
                     
@@ -195,7 +197,7 @@ module menu(
                         almAMPM = ~almAMPM;
                     end
                     
-                    if(almAMPM == 0)
+                    if(adjAlmAMPM == 0)
                         menu_bot = {8'h20, 8'h20, hourAlmL, hourAlmR, 8'h3A, minAlmL, minAlmR, 8'h20, 8'h41, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                     else
                         menu_bot = {8'h20, 8'h20, hourAlmL, hourAlmR, 8'h3A, minAlmL, minAlmR, 8'h20, 8'h50, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
@@ -234,7 +236,7 @@ module menu(
             4'b1110: begin
                 if(alarm)
                     if(hrMode == 0)
-                        if(almAMPM == 0)
+                        if(adjAlmAMPM == 0)
                             menu_bot = {8'h41, 8'h4C, 8'h4D, 8'h20, 8'h4F, 8'h4E, 8'h20, hourAlmL, hourAlmR, 8'h3A, minAlmL, minAlmR, 8'h20, 8'h41, 8'h4D, 8'h20};
                         else
                             menu_bot = {8'h41, 8'h4C, 8'h4D, 8'h20, 8'h4F, 8'h4E, 8'h20, hourAlmL, hourAlmR, 8'h3A, minAlmL, minAlmR, 8'h20, 8'h50, 8'h4D, 8'h20};
@@ -250,13 +252,37 @@ module menu(
         endcase
     end
     
+    always@(*)
+    begin
+        if(hrMode)
+        begin
+            if(almAMPM == 1)
+                adjAlmHour = almHour + 12;
+            else
+                adjAlmHour = almHour;
+        end
+        else   
+        begin
+            if(almHour > 11)
+            begin
+                adjAlmHour = almHour - 12;
+                adjAlmAMPM = 1;
+            end
+            else
+            begin
+                adjAlmHour = almHour;
+                adjAlmAMPM = almAMPM;
+            end
+        end
+    end
+    
     assign is24HrMode = hrMode;
     assign presetHour = hour;
     assign presetMin = min;
     assign presetampm = ampm;
-    assign alarmHour = almHour;
+    assign alarmHour = adjAlmHour;
     assign alarmMin = almMin;
-    assign alarmampm = almAMPM;
+    assign alarmampm = adjAlmAMPM;
     assign alarm_on = alarm;
     
 endmodule

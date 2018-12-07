@@ -49,9 +49,9 @@ module display_driver(
         begin
             case(commandstage)
                 2'b00: if(stage == 1) commandstage <= 2'b01;    //cursor top -> write top
-                2'b01: if(stage == 1 && j == dataSize - 1) commandstage <= 2'b10;    //write top -> cursor bot
+                2'b01: if(stage == 1 && j == dataSize) commandstage <= 2'b10;    //write top -> cursor bot
                 2'b10: if(stage == 1) commandstage <= 2'b11;    //cursor bot -> write bot
-                2'b11: if(stage == 1 && j == dataSize - 1) commandstage <= 2'b00;    //write bot -> cursor top
+                2'b11: if(stage == 1 && j == dataSize) commandstage <= 2'b00;    //write bot -> cursor top
             endcase
         end
     end

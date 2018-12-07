@@ -34,7 +34,7 @@ module top_module(
     wire load_fnA, load_fnB, load_fnC, alarm_on, alarm_ampm, backlight_ctrl;
     wire [5:0] hour, preset_hour, preset_min, timezone_hour, adjusted_hour;
     wire [5:0] minute, second, alarm_hour, alarm_min;
-    wire [127:0] time_top, time_bot, menu_top, menu_bot, ovr_top, ovr_bot, mux_top, mux_bot;
+    wire [127:0] time_top, time_bot, menu_top, menu_bot, ovr_top, ovr_bot, mux_top, mux_bot, timezone_name;
     
     prescaler(.clock(clock), .out1hz(clock1hz), .out5hz(clock5hz), .out200hz(clock200hz));
     button_debounce(.clock(clock5hz), .menuBtn(menuBtn), .snzBtn(snzBtn), .minBtn(minBtn), .plusBtn(plusBtn), .offBtn(offBtn), .menu(menu), .snz(snz), .min(minus), .plus(plus), .off(off));
@@ -43,11 +43,12 @@ module top_module(
     counter1224 (.preset(preset_hour), .presetampm(presetampm), .load(load), .clock(trigMin), .is24HrMode(is24HrMode), .out(hour), .isPM(isPM), .load_finished(load_fnA));
     timezone_control(.select(zoneSw), .out(timezone_hour), .led(led));
     timezone_adjust(.hour(hour), .selectedTime(timezone_hour), .is24HrMode(is24HrMode), .isPM(isPM), .loadRefZone(load), .adjustedTime(adjusted_hour), .adjustedAMPM(adjustedAMPM), .load_finished(load_fnC));
-    timezone_name(.timezone(timezone_hour), .lcd_out(time_top));
+    timezone_name(.timezone(timezone_hour), .lcd_out(timezone_name));
     timezone_overlay(.timezone(timezone_hour), .ovrIntrup(ovrIntrup), .top(ovr_top), .bot(ovr_bot));
     time_to_lcd(.hour(adjusted_hour), .minute(minute), .second(second), .is24HrMode(is24HrMode), .isPM(adjustedAMPM), .out(time_bot));
     alarm_control(.clock(clock5hz), .ref_hour(adjusted_hour), .ref_min(minute), .set_hour(alarm_hour), .set_min(alarm_min), .ref_ampm(isPM), .set_ampm(alarm_ampm),
                   .on(alarm_on), .is24HrMode(is24HrMode), .off_btn(offBtn), .snooze_btn(snzBtn), .play_sound(play), .light(light), .backlight(backlight_ctrl));
+    alarm_overlay(.alarm_on(alarm_on), .in(timezone_name), .out(time_top));
     display_mux(.menuIntrup(menuIntrup), .ovrIntrup(ovrIntrup), .time_top(time_top), .menu_top(menu_top), .time_bot(time_bot), .menu_bot(menu_bot), .ntzoverlay_top(ovr_top), .ntzoverlay_bot(ovr_bot),
                   .out_top(mux_top), .out_bot(mux_bot));
     display_driver(.clock(clock200hz), .in_top(mux_top), .in_bot(mux_bot), .data(data), .enable(enable), .select(select), .backlight_ctrl(backlight_ctrl), .backlight(backlight));

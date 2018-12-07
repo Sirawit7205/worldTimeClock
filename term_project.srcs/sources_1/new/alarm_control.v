@@ -34,7 +34,7 @@ module alarm_control(
     );
     
     reg [5:0] snooze_min = 0;
-    reg [4:0] snooze_hour = 0;
+    reg [5:0] snooze_hour = 0;
     reg [2:0] stage = 0;
     reg alarm_trig = 0;
     
@@ -47,19 +47,26 @@ module alarm_control(
         if(on)
         begin
             case(stage)
-                2'b00: begin
+                3'b000: begin
                     if(is24HrMode)
-                        if(ref_hour == set_hour && ref_min == set_min) stage <= 2'b01;
+                    begin
+                        if(ref_hour == set_hour && ref_min == set_min) stage <= 3'b001;
+                    end
                     else
-                        if(ref_hour == set_hour && ref_min == set_min && ref_ampm == set_ampm) stage <= 2'b01;
+                    begin
+                        if(ref_hour == set_hour && ref_min == set_min && ref_ampm == set_ampm) stage <= 3'b001;
+                    end
                 end
-                2'b01: begin
-                    if(snooze_btn) stage <= 2'b10;
-                    else if(off_btn) stage <= 2'b00;
+                3'b001: begin
+                    if(snooze_btn) stage <= 3'b010;
+                    else if(off_btn) stage <= 3'b100;
                 end
-                2'b10: stage <= 2'b11;
-                2'b11: begin
-                    if(ref_hour == set_hour + snooze_hour && ref_min == set_min + snooze_min) stage <= 2'b01;
+                3'b010: stage <= 3'b011;
+                3'b011: begin
+                    if(ref_hour == snooze_hour && ref_min == snooze_min) stage <= 3'b001;
+                end
+                3'b100: begin
+                    if(ref_min != set_min) stage <= 3'b000;
                 end
             endcase
         end
@@ -71,28 +78,31 @@ module alarm_control(
         if(on)
         begin
             case(stage)
-                2'b00: begin
+                3'b000: begin
                     snooze_hour <= 0;
                     snooze_min <= 0;
                     alarm_trig <= 0;
                 end
-                2'b01: begin
+                3'b001: begin
                     alarm_trig <= 1;
                 end
-                2'b10: begin
+                3'b010: begin
                     //code for snoozing
                     if(ref_min + 5 < 60)
                     begin
-                        snooze_min <= ref_min + 5;
-                        snooze_hour <= 0;
+                        snooze_min = ref_min + 5;
+                        snooze_hour = ref_hour;
                         alarm_trig <= 0;
                     end
                     
                     else
                     begin
-                        snooze_min <= ref_min - 55;
-                        snooze_hour <= 1;
+                        snooze_min = 0;
+                        snooze_hour = ref_hour + 1;
                     end
+                end
+                3'b100:begin
+                    alarm_trig <= 0;
                 end
             endcase
         end
