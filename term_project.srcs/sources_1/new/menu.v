@@ -165,7 +165,7 @@ module menu(
                 load = 1;
             end
             4'b1000: begin
-                hrMode <= ~hrMode;
+                hrMode = ~hrMode;
             end
             4'b1001: begin
                 menu_top = {8'h53, 8'h45, 8'h54, 8'h20, 8'h48, 8'h4F, 8'h55, 8'h52, 8'h3A, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
