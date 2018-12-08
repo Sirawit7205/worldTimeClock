@@ -1,29 +1,11 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 11/15/2018 02:28:55 AM
-// Design Name: 
-// Module Name: counter60
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
+//  counter60 module
+//  ->a counter module for seconds and minutes counting
 
 module counter60(
     input [5:0] preset,
-    input load,
-    input clock,
+    input load, clock,
     output [5:0] out,
     output trigger, load_finished
     );
@@ -34,21 +16,27 @@ module counter60(
     //counting block
     always@(posedge clock or posedge load)
     begin
+        
+        //load set time from menu
         if(load)
         begin
-            current = preset;
-            load_fn = 1;
+            current = preset;   //load
+            load_fn = 1;        //feedback to menu to stop loading
         end
         
+        //normal counting operation
         else
         begin
-            load_fn = 0;
-        
+            load_fn = 0;        //reset feedback flag
+            
+            //if fully counted
             if(current == 59)
             begin
                 current = 0;
                 ctrig <= 1;      //trigger the next counter in chain
-            end 
+            end
+            
+            //normal count 
             else
             begin
                 current = current + 1;

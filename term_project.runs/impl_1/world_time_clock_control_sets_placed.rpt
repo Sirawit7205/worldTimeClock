@@ -1,0 +1,169 @@
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.2.2 (win64) Build 2348494 Mon Oct  1 18:25:44 MDT 2018
+| Date         : Sun Dec  9 01:34:37 2018
+| Host         : SIRAWIT-DELL running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file world_time_clock_control_sets_placed.rpt
+| Design       : world_time_clock
+| Device       : xc7a35t
+---------------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Number of unique control sets                            |    98 |
+| Unused register locations in slices containing registers |   488 |
++----------------------------------------------------------+-------+
+
+
+2. Histogram
+------------
+
++--------+--------------+
+| Fanout | Control Sets |
++--------+--------------+
+|      2 |           70 |
+|      4 |            7 |
+|      6 |            1 |
+|      8 |            4 |
+|     10 |            1 |
+|     12 |            4 |
+|     14 |            2 |
+|    16+ |            9 |
++--------+--------------+
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |             178 |           49 |
+| No           | No                    | Yes                    |             106 |           51 |
+| No           | Yes                   | No                     |             214 |           46 |
+| Yes          | No                    | No                     |             180 |           55 |
+| Yes          | No                    | Yes                    |               0 |            0 |
+| Yes          | Yes                   | No                     |             114 |           31 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++-------------------------------------+----------------------------------------------------+--------------------------------------+------------------+----------------+
+|             Clock Signal            |                    Enable Signal                   |           Set/Reset Signal           | Slice Load Count | Bel Load Count |
++-------------------------------------+----------------------------------------------------+--------------------------------------+------------------+----------------+
+|  nolabel_line40/current12_reg[5]_P  |                                                    | nolabel_line40/current12_reg[5]_C    |                1 |              2 |
+|  nolabel_line40/current24_reg[3]_P  |                                                    | nolabel_line40/current24_reg[3]_C    |                1 |              2 |
+|  nolabel_line40/current24_reg[5]_P  |                                                    | nolabel_line40/current24_reg[5]_C    |                1 |              2 |
+|  nolabel_line40/current12_reg[4]_P  |                                                    | nolabel_line40/current12_reg[4]_C    |                1 |              2 |
+|  nolabel_line40/current12_reg[2]_P  |                                                    | nolabel_line40/current12_reg[2]_C    |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[4]_P      |                1 |              2 |
+|  nolabel_line40/current24_reg[4]_P  |                                                    | nolabel_line40/current24_reg[4]_C    |                1 |              2 |
+|  nolabel_line40/current_reg[0]_P    |                                                    | nolabel_line40/current_reg[0]_C      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[5]_P      |                1 |              2 |
+|  nolabel_line40/current24_reg[2]_P  |                                                    | nolabel_line40/current24_reg[2]_C    |                1 |              2 |
+|  nolabel_line40/current12_reg[3]_P  |                                                    | nolabel_line40/current12_reg[3]_C    |                1 |              2 |
+|  nolabel_line40/current_reg[2]_P    |                                                    | nolabel_line40/current_reg[2]_C_0    |                1 |              2 |
+|  nolabel_line40/current_reg[5]_P    |                                                    | nolabel_line40/current_reg[5]_C      |                1 |              2 |
+|  nolabel_line40/current_reg[1]_P    |                                                    | nolabel_line40/current_reg[1]_C      |                1 |              2 |
+|  nolabel_line40/current_reg[4]_P    |                                                    | nolabel_line40/current_reg[4]_C      |                1 |              2 |
+|  nolabel_line40/current_reg[3]_P    |                                                    | nolabel_line40/current_reg[3]_C      |                1 |              2 |
+|  nolabel_line40/currentampm_reg_P_0 |                                                    | nolabel_line40/currentampm_reg_C     |                1 |              2 |
+|  nolabel_line40/refZone_reg[1]_P    |                                                    | nolabel_line40/refZone_reg[1]_C      |                1 |              2 |
+|  nolabel_line40/refZone_reg[2]_P    |                                                    | nolabel_line40/refZone_reg[2]_C      |                1 |              2 |
+|  nolabel_line40/refZone_reg[0]_P    |                                                    | nolabel_line40/refZone_reg[0]_C      |                1 |              2 |
+|  nolabel_line40/refZone_reg[3]_P    |                                                    | nolabel_line40/refZone_reg[3]_C      |                1 |              2 |
+|  nolabel_line40/refZone_reg[4]_P    |                                                    | nolabel_line40/refZone_reg[4]_C      |                1 |              2 |
+|  nolabel_line40/refZone_reg[5]_P    |                                                    | nolabel_line40/refZone_reg[5]_C      |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current12_reg[4]_C    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[5]_C    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current12_reg[5]_P    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[3]_P    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[4]_C    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[5]_P    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current12_reg[4]_P    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current12_reg[5]_C    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current12_reg[2]_P    |                1 |              2 |
+| ~load_BUFG                          |                                                    | load_BUFG                            |                1 |              2 |
+|  n_0_813_BUFG                       |                                                    | nolabel_line40/state__0[3]           |                1 |              2 |
+|  n_2_814_BUFG                       | nolabel_line39/p_0_in                              | nolabel_line39/p_1_in                |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[2]_C    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[4]_P    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current12_reg[3]_C    |                1 |              2 |
+|  n_0_813_BUFG                       | nolabel_line40/rec_i_1_n_4                         |                                      |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[3]_C    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current12_reg[2]_C    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[2]_P    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/current12_reg[3]_P    |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/currentampm_reg_C     |                1 |              2 |
+|  min/trigMin                        |                                                    | nolabel_line40/currentampm_reg_P_0   |                1 |              2 |
+|  min/trigMin                        |                                                    | load_BUFG                            |                1 |              2 |
+|  sec/trigSec                        |                                                    |                                      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[1]_C      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[0]_P      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[0]_C      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[2]_P      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[5]_P      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[1]_P      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[5]_C      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[4]_P      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[4]_C      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[2]_C_0    |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[3]_P      |                1 |              2 |
+|  sec/trigSec                        |                                                    | nolabel_line40/current_reg[3]_C      |                1 |              2 |
+|  sec/trigSec                        |                                                    | load_BUFG                            |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[0]_C      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[1]_C      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[1]_P      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[2]_C      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[2]_P      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[3]_C      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[0]_P      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[3]_P      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[4]_C      |                1 |              2 |
+| ~load_BUFG                          |                                                    | nolabel_line40/refZone_reg[5]_C      |                1 |              2 |
+|  nolabel_line40/current24_reg[1]_P  |                                                    | nolabel_line40/current24_reg[1]_C    |                2 |              4 |
+|  nolabel_line40/current24_reg[0]_P  |                                                    | nolabel_line40/current24_reg[0]_C    |                1 |              4 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[1]_P    |                2 |              4 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[0]_C    |                1 |              4 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[1]_C    |                2 |              4 |
+|  min/trigMin                        |                                                    | nolabel_line40/current24_reg[0]_P    |                1 |              4 |
+| ~is24HrMode_BUFG                    |                                                    |                                      |                2 |              4 |
+|  clock_IBUF_BUFG                    |                                                    |                                      |                3 |              6 |
+|  n_0_813_BUFG                       | nolabel_line40/FSM_sequential_state_reg[3]_i_1_n_4 |                                      |                2 |              8 |
+|  n_0_813_BUFG                       | nolabel_line34/snooze_min[3]_i_1_n_4               | nolabel_line34/snooze_min[5]_i_1_n_4 |                2 |              8 |
+|  n_0_813_BUFG                       | nolabel_line40/menu_top[76]_i_1_n_4                | nolabel_line40/menu_top[93]_i_1_n_4  |                2 |              8 |
+|  n_2_814_BUFG                       |                                                    |                                      |                2 |              8 |
+|  n_2_814_BUFG                       | nolabel_line39/data[7]_i_1_n_4                     | nolabel_line39/j[4]_i_1_n_4          |                2 |             10 |
+|  n_0_813_BUFG                       | nolabel_line40/almHour                             |                                      |                3 |             12 |
+|  n_0_813_BUFG                       | nolabel_line40/almMin                              |                                      |                2 |             12 |
+|  n_0_813_BUFG                       | nolabel_line40/min[5]_i_1_n_4                      |                                      |                3 |             12 |
+|  n_0_813_BUFG                       | nolabel_line40/hour[5]_i_1_n_4                     |                                      |                2 |             12 |
+|  n_3_812_BUFG                       |                                                    |                                      |                2 |             14 |
+|  n_0_813_BUFG                       | nolabel_line40/menu_top[76]_i_1_n_4                |                                      |                4 |             14 |
+|  n_0_813_BUFG                       | nolabel_line34/snooze_min[3]_i_1_n_4               |                                      |                4 |             16 |
+|  n_2_814_BUFG                       | nolabel_line39/data[7]_i_1_n_4                     |                                      |                5 |             16 |
+|  n_0_813_BUFG                       |                                                    |                                      |               14 |             48 |
+|  clock_IBUF_BUFG                    |                                                    | n_3_812_BUFG                         |                7 |             54 |
+|  clock_IBUF_BUFG                    |                                                    | n_0_813_BUFG                         |                7 |             54 |
+|  clock_IBUF_BUFG                    |                                                    | n_2_814_BUFG                         |                7 |             54 |
+|  n_0_813_BUFG                       | nolabel_line40/menu_bot[108]_i_1_n_4               |                                      |               29 |             76 |
+|  n_0_813_BUFG                       | nolabel_line40/menu_bot[108]_i_1_n_4               | nolabel_line40/menu_top[93]_i_1_n_4  |               24 |             86 |
+|  n_1_651_BUFG                       |                                                    |                                      |               25 |             96 |
++-------------------------------------+----------------------------------------------------+--------------------------------------+------------------+----------------+
+
+

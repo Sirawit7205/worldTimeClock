@@ -1,31 +1,15 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 11/15/2018 05:09:54 PM
-// Design Name: 
-// Module Name: display_test
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+
+//  timezone_name module
+//  ->converts a timezone number representation to LCD display code
 
 module timezone_name(
     input [5:0] timezone,
     output [127:0] lcd_out
     );
+    
     reg [127:0] temp;
     
-    //================ Timezone name ====================
     always@(timezone)
     begin
         case(timezone)
@@ -97,6 +81,8 @@ module timezone_name(
             end  
         endcase
     end
+    
+    //assign to output
     assign lcd_out = temp;
-    //===================================================
+    
 endmodule

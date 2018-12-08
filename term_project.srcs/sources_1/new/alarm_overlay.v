@@ -1,24 +1,7 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 12/08/2018 02:17:02 AM
-// Design Name: 
-// Module Name: alarm_overlay
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
+//  alarm_overlay module
+//  ->overlays a letter "A" at the top right corner of the display when the alarm is set
 
 module alarm_overlay(
     input alarm_on,
@@ -28,9 +11,9 @@ module alarm_overlay(
     
     always@(*)
     begin
-        if(alarm_on)
-            out = {in[127:8], 8'h41};
-        else
-            out = in;
+        if(alarm_on)        //alarm is on
+            out = {in[127:8], 8'h41};   //replace the last letter on the top line with "A"
+        else                //alarm is off
+            out = in;       //pass through
     end
 endmodule

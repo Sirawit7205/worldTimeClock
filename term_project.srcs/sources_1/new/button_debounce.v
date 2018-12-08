@@ -1,24 +1,7 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 11/27/2018 10:27:09 PM
-// Design Name: 
-// Module Name: button_debounce
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
+//  button_debounce module
+//  -> debounce all 5 push buttons with D flip-flops
 
 module button_debounce(
     input clock,
@@ -51,6 +34,9 @@ module button_debounce(
     assign off = offS1 & offS2;
     
 endmodule
+
+//  dff module
+//  ->generic D flip-flop
 
 module dff(
     input clock, trig,

@@ -1,24 +1,7 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 11/27/2018 04:18:50 PM
-// Design Name: 
-// Module Name: menu
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
+//  menu module
+//  ->controls the menu of the clock
 
 module menu(
     input clock, load_finished,
@@ -60,6 +43,7 @@ module menu(
     number_to_charcode inst7(.in(tempAlmMinL), .out(minAlmL));
     number_to_charcode inst8(.in(tempAlmMinR), .out(minAlmR));
     
+    //change state
     always@(posedge clock)
     begin
         case(state)
@@ -74,14 +58,14 @@ module menu(
                      else if(offBtn) state <= 4'b1011;  //record alarm -> RA submenu
             4'b0101: if(offBtn) state <= 4'b0110;       //ST submenu 1 -> ST submenu 2
             4'b0110: if(offBtn) state <= 4'b0111;       //ST submenu 2 -> ST load
-            4'b0111: if(load_finished) state <= 4'b1101;//ST load -> idle
+            4'b0111: if(load_finished) state <= 4'b1101;//ST load -> rec/load end
             4'b1000: state <= 4'b0000;                  //toggle am/pm -> idle
             4'b1001: if(offBtn) state <= 4'b1010;       //SA submenu 1 -> SA submenu 2
             4'b1010: if(offBtn) state <= 4'b0000;       //SA submenu 2 -> idle
             4'b1011: if(menuBtn) state <= 4'b0000;      //RA submenu -> idle
                      else if(plusBtn) state <= 4'b1100; //RA submenu -> start record
-            4'b1100: if(plusBtn) state <= 4'b1101;      //start record -> end record
-            4'b1101: state <= 4'b0000;                  //end record -> idle
+            4'b1100: if(plusBtn) state <= 4'b1101;      //start record -> rec/load end
+            4'b1101: state <= 4'b0000;                  //rec/load end -> idle
             4'b1110: if(menuBtn) state <= 4'b0011;      //alarm on/off -> set alarm
                      else if(offBtn) state <= 4'b1111;  //alarm on/off -> toggle alarm
             4'b1111: state <= 4'b0000;                  //toggle alarm -> idle
@@ -91,29 +75,30 @@ module menu(
     
     always@(posedge clock)
     begin
-        if(state != 4'b0000) menuIntrup = 1;
-        else menuIntrup = 0;
+        if(state != 4'b0000) menuIntrup = 1;        //set interrupt to mux
+        else menuIntrup = 0;                        //reset on idle
         
         case(state)
-            //all text only states
-            4'b0000: begin
-                hour <= 0;
+            4'b0000: begin      //idle
+                hour <= 0;      //reset all temp data
                 min <= 0;
                 ampm <= 0;
             end
-            4'b0001: begin
+            4'b0001: begin      //set time
                 menu_top = {8'h4D, 8'h45, 8'h4E, 8'h55, 8'h3A, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 menu_bot = {8'h53, 8'h45, 8'h54, 8'h20, 8'h54, 8'h49, 8'h4D, 8'h45, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
             end
-            4'b0010: menu_bot = {8'h31, 8'h32, 8'h2F, 8'h32, 8'h34, 8'h20, 8'h48, 8'h4F, 8'h55, 8'h52, 8'h20, 8'h4D, 8'h4F, 8'h44, 8'h45, 8'h20};
-            4'b0011: menu_bot = {8'h53, 8'h45, 8'h54, 8'h20, 8'h41, 8'h4C, 8'h41, 8'h52, 8'h4D, 8'h20, 8'h54, 8'h49, 8'h4D, 8'h45, 8'h20, 8'h20};
-            4'b0100: menu_bot = {8'h52, 8'h45, 8'h43, 8'h4F, 8'h52, 8'h44, 8'h20, 8'h41, 8'h4C, 8'h41, 8'h52, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20};
             
-            //other states
-            4'b0101: begin
+            4'b0010: menu_bot = {8'h31, 8'h32, 8'h2F, 8'h32, 8'h34, 8'h20, 8'h48, 8'h4F, 8'h55, 8'h52, 8'h20, 8'h4D, 8'h4F, 8'h44, 8'h45, 8'h20};   //12/24
+            
+            4'b0011: menu_bot = {8'h53, 8'h45, 8'h54, 8'h20, 8'h41, 8'h4C, 8'h41, 8'h52, 8'h4D, 8'h20, 8'h54, 8'h49, 8'h4D, 8'h45, 8'h20, 8'h20};   //set alarm
+            
+            4'b0100: menu_bot = {8'h52, 8'h45, 8'h43, 8'h4F, 8'h52, 8'h44, 8'h20, 8'h41, 8'h4C, 8'h41, 8'h52, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20};   //record alarm
+            
+            4'b0101: begin      //ST submenu 1
                 menu_top = {8'h53, 8'h45, 8'h54, 8'h20, 8'h48, 8'h4F, 8'h55, 8'h52, 8'h3A, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 
-                if(minBtn) hour = hour - 1;
+                if(minBtn) hour = hour - 1;         //add/sub from current time via buttons
                 else if(plusBtn) hour = hour + 1;
                 
                 //24 hour mode
@@ -124,6 +109,7 @@ module menu(
                     
                     menu_bot = {8'h20, 8'h20, 8'h20, 8'h20, hourL, hourR, 8'h3A, minuteL, minuteR, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 end
+                
                 //12 hour mode
                 else
                 begin
@@ -144,13 +130,14 @@ module menu(
                         menu_bot = {8'h20, 8'h20, hourL, hourR, 8'h3A, minuteL, minuteR, 8'h20, 8'h50, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 end
             end
-            4'b0110: begin
+            
+            4'b0110: begin      //ST submenu 2
                 menu_top = {8'h53, 8'h45, 8'h54, 8'h20, 8'h4D, 8'h49, 8'h4E, 8'h55, 8'h54, 8'h45, 8'h3A, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 
-                if(minBtn) min = min - 1;
+                if(minBtn) min = min - 1;           //add/sub from current time via buttons
                 else if(plusBtn) min = min + 1;
                 
-                if(min == 63) min = 59;
+                if(min == 63) min = 59;             //handle overflow/underflow
                 else if(min == 60) min = 0;
                 
                 if(hrMode)
@@ -161,16 +148,19 @@ module menu(
                     else
                         menu_bot = {8'h20, 8'h20, hourL, hourR, 8'h3A, minuteL, minuteR, 8'h20, 8'h50, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
             end
-            4'b0111: begin
-                load = 1;
+            
+            4'b0111: begin      //ST load
+                load = 1;       //set load flag (to counters and timezone_adjust)
             end
-            4'b1000: begin
+            
+            4'b1000: begin      //toggle AM/PM
                 hrMode = ~hrMode;
             end
-            4'b1001: begin
+            
+            4'b1001: begin      //SA submenu 1
                 menu_top = {8'h53, 8'h45, 8'h54, 8'h20, 8'h48, 8'h4F, 8'h55, 8'h52, 8'h3A, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 
-                if(minBtn) almHour = almHour - 1;
+                if(minBtn) almHour = almHour - 1;           //add/sub from current time via buttons
                 else if(plusBtn) almHour = almHour + 1;
                 
                 //24 hour mode
@@ -203,37 +193,42 @@ module menu(
                         menu_bot = {8'h20, 8'h20, hourAlmL, hourAlmR, 8'h3A, minAlmL, minAlmR, 8'h20, 8'h50, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 end
             end
-            4'b1010: begin
+            
+            4'b1010: begin      //SA submenu 2
                 menu_top = {8'h53, 8'h45, 8'h54, 8'h20, 8'h4D, 8'h49, 8'h4E, 8'h55, 8'h54, 8'h45, 8'h3A, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 
-                if(minBtn) almMin = almMin - 1;
+                if(minBtn) almMin = almMin - 1;             //add/sub from current time via buttons
                 else if(plusBtn) almMin = almMin + 1;
                 
-                if(almMin == 63) almMin = 59;
+                if(almMin == 63) almMin = 59;               //handle overflow/underflow
                 else if(almMin == 60) almMin = 0;
                 
                 if(hrMode)
                     menu_bot = {8'h20, 8'h20, 8'h20, 8'h20, hourAlmL, hourAlmR, 8'h3A, minAlmL, minAlmR, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                 else
-                    if(almAMPM == 0)
+                    if(adjAlmAMPM == 0)
                         menu_bot = {8'h20, 8'h20, hourAlmL, hourAlmR, 8'h3A, minAlmL, minAlmR, 8'h20, 8'h41, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
                     else
                         menu_bot = {8'h20, 8'h20, hourAlmL, hourAlmR, 8'h3A, minAlmL, minAlmR, 8'h20, 8'h50, 8'h4D, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
             end
-            4'b1011: begin
+            
+            4'b1011: begin      //RA submenu
                 menu_top = {8'h50, 8'h52, 8'h45, 8'h53, 8'h53, 8'h20, 8'h2B, 8'h20, 8'h54, 8'h4F, 8'h20, 8'h52, 8'h45, 8'h43, 8'h20, 8'h20};
                 menu_bot = {8'h4D, 8'h45, 8'h4E, 8'h55, 8'h20, 8'h54, 8'h4F, 8'h20, 8'h43, 8'h41, 8'h4E, 8'h43, 8'h45, 8'h4C, 8'h20, 8'h20};            
             end
-            4'b1100: begin
+            
+            4'b1100: begin      //start record
                 menu_top = {8'h50, 8'h52, 8'h45, 8'h53, 8'h53, 8'h20, 8'h2B, 8'h20, 8'h54, 8'h4F, 8'h20, 8'h53, 8'h41, 8'h56, 8'h45, 8'h20};
                 menu_bot = {8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
-                rec = 1;
+                rec = 1;        //set rec flag for ISD1820 to start recording
             end
-            4'b1101: begin
-                rec = 0;
-                load = 0;
+            
+            4'b1101: begin      //rec/load end
+                rec = 0;        //reset rec flag to stop recording
+                load = 0;       //reset load flag
             end
-            4'b1110: begin
+            
+            4'b1110: begin      //alarm on/off
                 if(alarm)
                     if(hrMode == 0)
                         if(adjAlmAMPM == 0)
@@ -245,15 +240,18 @@ module menu(
                 else
                     menu_bot = {8'h41, 8'h4C, 8'h4D, 8'h20, 8'h4F, 8'h46, 8'h46, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20, 8'h20};
             end
-            4'b1111: begin
+            
+            4'b1111: begin      //toggle alarm
                 alarm <= ~alarm;
             end
             
         endcase
     end
     
+    //toggle alarm time display between 12/24 hours mode
     always@(*)
     begin
+        //24 hours mode
         if(hrMode)
         begin
             if(almAMPM == 1)
@@ -261,6 +259,8 @@ module menu(
             else
                 adjAlmHour = almHour;
         end
+        
+        //12 hours mode
         else   
         begin
             if(almHour > 11)
@@ -276,6 +276,7 @@ module menu(
         end
     end
     
+    //assign to output
     assign is24HrMode = hrMode;
     assign presetHour = hour;
     assign presetMin = min;
